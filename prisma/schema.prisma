@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Tipos de sesión disponibles
+model SessionType {
+  id          String       @id @default(cuid())
+  name        String       @unique // "Express", "Clásica", "Premium"
+  duration    Int          // Duración en minutos
+  price       Float        // Precio en USD
+  description String?      // Descripción opcional
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  appointments Appointment[]
+
+  @@map("session_types")
+}
+
+// Citas/Reservas
+model Appointment {
+  id            String      @id @default(cuid())
+  sessionTypeId String
+  sessionType   SessionType @relation(fields: [sessionTypeId], references: [id])
+  date          DateTime    // Fecha y hora de la cita
+  duration      Int         // Duración en minutos (redundante pero útil)
+  customerName  String
+  customerEmail String
+  customerPhone String?
+  status        AppointmentStatus @default(PENDING)
+  notes         String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([date])
+  @@index([status])
+  @@map("appointments")
+}
+
+// Estado de la cita
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}

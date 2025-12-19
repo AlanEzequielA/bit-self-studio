@@ -1,36 +1,132 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# bit. Self Studio - Sistema de Reservas
 
-## Getting Started
+Aplicación web para agendar citas en el estudio de auto-fotografía bit. Self Studio.
 
-First, run the development server:
+## Tecnologías
+
+- **Next.js 16** - Framework React con App Router
+- **React 19** - Biblioteca UI
+- **TypeScript** - Tipado estático
+- **Prisma** - ORM para base de datos
+- **Tailwind CSS v4** - Estilos
+- **PostgreSQL** - Base de datos
+
+## Configuración Inicial
+
+### 1. Instalar dependencias
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Configurar base de datos
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Crea un archivo `.env` en la raíz del proyecto con la siguiente configuración:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+DATABASE_URL="postgresql://usuario:password@localhost:5432/bit_self_studio?schema=public"
+```
 
-## Learn More
+Reemplaza `usuario`, `password`, `localhost`, `5432` y `bit_self_studio` con tus credenciales de PostgreSQL.
 
-To learn more about Next.js, take a look at the following resources:
+### 3. Configurar Prisma
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+# Crear la base de datos y aplicar el schema
+pnpm db:push
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# O usar migraciones (recomendado para producción)
+pnpm db:migrate
 
-## Deploy on Vercel
+# Poblar la base de datos con datos iniciales
+pnpm db:seed
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 4. Iniciar el servidor de desarrollo
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+pnpm dev
+```
+
+Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
+
+## Scripts Disponibles
+
+- `pnpm dev` - Inicia el servidor de desarrollo
+- `pnpm build` - Construye la aplicación para producción
+- `pnpm start` - Inicia el servidor de producción
+- `pnpm lint` - Ejecuta el linter
+- `pnpm db:push` - Aplica el schema a la base de datos sin migraciones
+- `pnpm db:migrate` - Crea y aplica migraciones
+- `pnpm db:seed` - Pobla la base de datos con datos iniciales
+- `pnpm db:studio` - Abre Prisma Studio (interfaz visual para la BD)
+
+## Estructura del Proyecto
+
+```
+bit-self-studio/
+├── app/                    # Next.js App Router
+│   ├── api/               # API Routes
+│   │   ├── appointments/  # Endpoints para citas
+│   │   ├── sessions/      # Endpoints para tipos de sesión
+│   │   └── availability/  # Endpoints para disponibilidad
+│   ├── servicios/         # Página de servicios y precios
+│   ├── reservar/          # Página de reserva con calendario
+│   ├── confirmar/         # Página de confirmación
+│   └── confirmacion-exitosa/ # Página de confirmación exitosa
+├── components/            # Componentes reutilizables
+│   ├── Header.tsx         # Header con navegación
+│   └── Footer.tsx         # Footer
+├── lib/                   # Utilidades
+│   └── prisma.ts         # Cliente de Prisma
+└── prisma/               # Configuración de Prisma
+    ├── schema.prisma     # Schema de la base de datos
+    └── seed.ts           # Script de seed
+```
+
+## Modelos de Base de Datos
+
+### SessionType
+Tipos de sesión disponibles:
+- **Sesión Express** - 30 minutos - $80 USD
+- **Sesión Clásica** - 60 minutos - $140 USD
+- **Sesión Premium** - 90 minutos - $200 USD
+
+### Appointment
+Citas/reservas de los clientes con información de contacto y estado.
+
+## API Endpoints
+
+### Sesiones
+- `GET /api/sessions` - Obtiene todos los tipos de sesión
+- `GET /api/sessions/[id]` - Obtiene un tipo de sesión específico
+
+### Disponibilidad
+- `GET /api/availability?date=YYYY-MM-DD&duration=30` - Obtiene horarios disponibles para una fecha
+
+### Citas
+- `POST /api/appointments` - Crea una nueva cita
+- `GET /api/appointments/[id]` - Obtiene una cita específica
+
+## Características
+
+- ✅ Sistema de reservas con calendario interactivo
+- ✅ Selección de tipos de sesión y precios
+- ✅ Verificación de disponibilidad en tiempo real
+- ✅ Confirmación de citas con información del cliente
+- ✅ Diseño responsive y moderno
+- ✅ Soporte para modo oscuro (preparado)
+
+## Próximos Pasos
+
+- [ ] Implementar autenticación de usuarios
+- [ ] Panel de administración para gestionar citas
+- [ ] Notificaciones por email
+- [ ] Integración con calendario (Google Calendar, iCal)
+- [ ] Sistema de pagos
+- [ ] Galería de fotos
+- [ ] Página de portafolio
+
+## Licencia
+
+Privado - bit. Self Studio

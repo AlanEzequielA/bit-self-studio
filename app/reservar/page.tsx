@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
@@ -18,7 +18,7 @@ interface TimeSlot {
   available: boolean
 }
 
-export default function ReservarPage() {
+function ReservarContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
@@ -114,162 +114,172 @@ export default function ReservarPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
-      <Header />
+    <main className="flex-1 py-16">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+            Estudio de Auto-Fotografía
+          </h1>
+          <p className="text-xl text-gray-700">
+            Agenda tu sesión de fotografía con nosotros.
+          </p>
+        </div>
 
-      <main className="flex-1 py-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">
-              Estudio de Auto-Fotografía
-            </h1>
-            <p className="text-xl text-gray-700">
-              Agenda tu sesión de fotografía con nosotros.
-            </p>
-          </div>
+        <div className="grid lg:grid-cols-3 gap-8">
+          {/* Calendar and Time Selection */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Calendar */}
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="flex justify-between items-center mb-4">
+                <button
+                  onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))}
+                  className="p-2 hover:bg-gray-100 rounded"
+                >
+                  ←
+                </button>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
+                </h3>
+                <button
+                  onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))}
+                  className="p-2 hover:bg-gray-100 rounded"
+                >
+                  →
+                </button>
+              </div>
 
-          <div className="grid lg:grid-cols-3 gap-8">
-            {/* Calendar and Time Selection */}
-            <div className="lg:col-span-2 space-y-6">
-              {/* Calendar */}
+              <div className="grid grid-cols-7 gap-2 mb-2">
+                {['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá', 'Do'].map(day => (
+                  <div key={day} className="text-center text-sm font-medium text-gray-700 py-2">
+                    {day}
+                  </div>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-7 gap-2">
+                {generateCalendarDays().map((date, idx) => {
+                  if (!date) return <div key={idx}></div>
+                  const isSelected = selectedDate?.toDateString() === date.toDateString()
+                  const isPast = date < new Date(new Date().setHours(0, 0, 0, 0))
+
+                  return (
+                    <button
+                      key={idx}
+                      onClick={() => !isPast && handleDateSelect(date)}
+                      disabled={isPast}
+                      className={`p-2 rounded ${
+                        isSelected
+                          ? 'bg-yellow-400 text-black font-semibold'
+                          : isPast
+                          ? 'text-gray-300 cursor-not-allowed'
+                          : 'hover:bg-gray-100 text-gray-700'
+                      }`}
+                    >
+                      {date.getDate()}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* Time Slots */}
+            {selectedDate && (
               <div className="bg-white rounded-lg shadow-md p-6">
-                <div className="flex justify-between items-center mb-4">
-                  <button
-                    onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))}
-                    className="p-2 hover:bg-gray-100 rounded"
-                  >
-                    ←
-                  </button>
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
-                  </h3>
-                  <button
-                    onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))}
-                    className="p-2 hover:bg-gray-100 rounded"
-                  >
-                    →
-                  </button>
-                </div>
-
-                <div className="grid grid-cols-7 gap-2 mb-2">
-                  {['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá', 'Do'].map(day => (
-                    <div key={day} className="text-center text-sm font-medium text-gray-700 py-2">
-                      {day}
-                    </div>
-                  ))}
-                </div>
-
-                <div className="grid grid-cols-7 gap-2">
-                  {generateCalendarDays().map((date, idx) => {
-                    if (!date) return <div key={idx}></div>
-                    const isSelected = selectedDate?.toDateString() === date.toDateString()
-                    const isPast = date < new Date(new Date().setHours(0, 0, 0, 0))
-
+                <h3 className="text-lg font-semibold mb-4 text-gray-900">Horarios Disponibles</h3>
+                <div className="space-y-2">
+                  {availableSlots.map((slot, idx) => {
+                    const isSelected = selectedTime === `${slot.start}-${slot.end}`
                     return (
                       <button
                         key={idx}
-                        onClick={() => !isPast && handleDateSelect(date)}
-                        disabled={isPast}
-                        className={`p-2 rounded ${
+                        onClick={() => slot.available && setSelectedTime(`${slot.start}-${slot.end}`)}
+                        disabled={!slot.available}
+                        className={`w-full p-3 rounded-lg text-left transition-colors ${
                           isSelected
                             ? 'bg-yellow-400 text-black font-semibold'
-                            : isPast
-                            ? 'text-gray-300 cursor-not-allowed'
-                            : 'hover:bg-gray-100 text-gray-700'
+                            : slot.available
+                            ? 'bg-white border border-gray-200 hover:border-yellow-400 text-gray-700'
+                            : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                         }`}
                       >
-                        {date.getDate()}
+                        {slot.start} - {slot.end}
                       </button>
                     )
                   })}
                 </div>
               </div>
+            )}
+          </div>
 
-              {/* Time Slots */}
-              {selectedDate && (
-                <div className="bg-white rounded-lg shadow-md p-6">
-                  <h3 className="text-lg font-semibold mb-4 text-gray-900">Horarios Disponibles</h3>
-                  <div className="space-y-2">
-                    {availableSlots.map((slot, idx) => {
-                      const isSelected = selectedTime === `${slot.start}-${slot.end}`
-                      return (
-                        <button
-                          key={idx}
-                          onClick={() => slot.available && setSelectedTime(`${slot.start}-${slot.end}`)}
-                          disabled={!slot.available}
-                          className={`w-full p-3 rounded-lg text-left transition-colors ${
-                            isSelected
-                              ? 'bg-yellow-400 text-black font-semibold'
-                              : slot.available
-                              ? 'bg-white border border-gray-200 hover:border-yellow-400 text-gray-700'
-                              : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                          }`}
-                        >
-                          {slot.start} - {slot.end}
-                        </button>
-                      )
-                    })}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Session Selection and Summary */}
-            <div className="space-y-6">
-              {/* Session Selection */}
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h3 className="text-lg font-semibold mb-4 text-gray-900">Tipo de Sesión</h3>
-                <div className="space-y-3">
-                  {sessionTypes.map((session) => (
-                    <button
-                      key={session.id}
-                      onClick={() => setSelectedSession(session)}
-                      className={`w-full p-4 rounded-lg border-2 text-left transition-colors ${
-                        selectedSession?.id === session.id
-                          ? 'border-yellow-400 bg-yellow-50'
-                          : 'border-gray-200 hover:border-yellow-300'
-                      }`}
-                    >
-                      <div className="font-semibold text-gray-900">{session.name}</div>
-                      <div className="text-sm text-gray-800">
-                        {session.duration} min - ${session.price} MXN
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Appointment Summary */}
-              {selectedDate && selectedTime && selectedSession && (
-                <div className="bg-white rounded-lg shadow-md p-6">
-                  <h3 className="text-lg font-semibold mb-4 text-gray-900">Resumen de la Cita:</h3>
-                  <div className="space-y-2 text-sm mb-6 text-gray-800">
-                    <p className="font-medium text-gray-900">{selectedSession.name}</p>
-                    <p className="text-gray-700">{selectedDate.toLocaleDateString('es-ES', {
-                      weekday: 'long',
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}</p>
-                    <p className="text-gray-700">{selectedTime}</p>
-                    <p className="text-gray-700">Duración: {selectedSession.duration} min</p>
-                    <p className="font-semibold text-lg mt-4 text-gray-900">
-                      Total: ${selectedSession.price} MXN
-                    </p>
-                  </div>
+          {/* Session Selection and Summary */}
+          <div className="space-y-6">
+            {/* Session Selection */}
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <h3 className="text-lg font-semibold mb-4 text-gray-900">Tipo de Sesión</h3>
+              <div className="space-y-3">
+                {sessionTypes.map((session) => (
                   <button
-                    onClick={handleConfirm}
-                    className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-3 px-6 rounded-full transition-colors"
+                    key={session.id}
+                    onClick={() => setSelectedSession(session)}
+                    className={`w-full p-4 rounded-lg border-2 text-left transition-colors ${
+                      selectedSession?.id === session.id
+                        ? 'border-yellow-400 bg-yellow-50'
+                        : 'border-gray-200 hover:border-yellow-300'
+                    }`}
                   >
-                    Confirmar Cita
+                    <div className="font-semibold text-gray-900">{session.name}</div>
+                    <div className="text-sm text-gray-800">
+                      {session.duration} min - ${session.price} MXN
+                    </div>
                   </button>
-                </div>
-              )}
+                ))}
+              </div>
             </div>
+
+            {/* Appointment Summary */}
+            {selectedDate && selectedTime && selectedSession && (
+              <div className="bg-white rounded-lg shadow-md p-6">
+                <h3 className="text-lg font-semibold mb-4 text-gray-900">Resumen de la Cita:</h3>
+                <div className="space-y-2 text-sm mb-6 text-gray-800">
+                  <p className="font-medium text-gray-900">{selectedSession.name}</p>
+                  <p className="text-gray-700">{selectedDate.toLocaleDateString('es-ES', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}</p>
+                  <p className="text-gray-700">{selectedTime}</p>
+                  <p className="text-gray-700">Duración: {selectedSession.duration} min</p>
+                  <p className="font-semibold text-lg mt-4 text-gray-900">
+                    Total: ${selectedSession.price} MXN
+                  </p>
+                </div>
+                <button
+                  onClick={handleConfirm}
+                  className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-3 px-6 rounded-full transition-colors"
+                >
+                  Confirmar Cita
+                </button>
+              </div>
+            )}
           </div>
         </div>
-      </main>
+      </div>
+    </main>
+  )
+}
 
+export default function ReservarPage() {
+  return (
+    <div className="min-h-screen flex flex-col bg-gray-50">
+      <Header />
+      <Suspense fallback={
+        <div className="flex-1 flex items-center justify-center">
+          <p>Cargando...</p>
+        </div>
+      }>
+        <ReservarContent />
+      </Suspense>
       <Footer />
     </div>
   )

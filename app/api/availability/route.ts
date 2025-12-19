@@ -53,7 +53,7 @@ export async function GET(request: Request) {
         slotEnd.setMinutes(slotEnd.getMinutes() + duration)
 
         // Check if this slot conflicts with existing appointments
-        const hasConflict = appointments.some(apt => {
+        const hasConflict = appointments.some((apt: { date: Date; duration: number }) => {
           const aptStart = new Date(apt.date)
           const aptEnd = new Date(aptStart.getTime() + apt.duration * 60000)
 
@@ -94,4 +94,3 @@ export async function GET(request: Request) {
     )
   }
 }
-

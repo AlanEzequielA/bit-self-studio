@@ -38,7 +38,7 @@ export default function ReservarPage() {
         // Set default session if coming from servicios page
         const sessionParam = searchParams.get('session')
         if (sessionParam && data.length > 0) {
-          const session = data.find((s: SessionType) => 
+          const session = data.find((s: SessionType) =>
             s.name.toLowerCase().includes(sessionParam.replace('-', ' '))
           )
           if (session) setSelectedSession(session)
@@ -78,21 +78,21 @@ export default function ReservarPage() {
     const startingDayOfWeek = firstDay.getDay()
 
     const days = []
-    
+
     // Empty cells for days before month starts
     for (let i = 0; i < startingDayOfWeek; i++) {
       days.push(null)
     }
-    
+
     // Days of the month
     for (let day = 1; day <= daysInMonth; day++) {
       days.push(new Date(year, month, day))
     }
-    
+
     return days
   }
 
-  const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
+  const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
     'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
 
   const defaultTimeSlots = [
@@ -116,7 +116,7 @@ export default function ReservarPage() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
-      
+
       <main className="flex-1 py-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-8">
@@ -150,7 +150,7 @@ export default function ReservarPage() {
                     →
                   </button>
                 </div>
-                
+
                 <div className="grid grid-cols-7 gap-2 mb-2">
                   {['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá', 'Do'].map(day => (
                     <div key={day} className="text-center text-sm font-medium text-gray-700 py-2">
@@ -158,13 +158,13 @@ export default function ReservarPage() {
                     </div>
                   ))}
                 </div>
-                
+
                 <div className="grid grid-cols-7 gap-2">
                   {generateCalendarDays().map((date, idx) => {
                     if (!date) return <div key={idx}></div>
                     const isSelected = selectedDate?.toDateString() === date.toDateString()
                     const isPast = date < new Date(new Date().setHours(0, 0, 0, 0))
-                    
+
                     return (
                       <button
                         key={idx}
@@ -231,8 +231,8 @@ export default function ReservarPage() {
                       }`}
                     >
                       <div className="font-semibold text-gray-900">{session.name}</div>
-                      <div className="text-sm text-gray-700">
-                        {session.duration} min - ${session.price} USD
+                      <div className="text-sm text-gray-800">
+                        {session.duration} min - ${session.price} MXN
                       </div>
                     </button>
                   ))}
@@ -245,16 +245,16 @@ export default function ReservarPage() {
                   <h3 className="text-lg font-semibold mb-4 text-gray-900">Resumen de la Cita:</h3>
                   <div className="space-y-2 text-sm mb-6 text-gray-800">
                     <p className="font-medium text-gray-900">{selectedSession.name}</p>
-                    <p className="text-gray-700">{selectedDate.toLocaleDateString('es-ES', { 
-                      weekday: 'long', 
-                      year: 'numeric', 
-                      month: 'long', 
-                      day: 'numeric' 
+                    <p className="text-gray-700">{selectedDate.toLocaleDateString('es-ES', {
+                      weekday: 'long',
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
                     })}</p>
                     <p className="text-gray-700">{selectedTime}</p>
                     <p className="text-gray-700">Duración: {selectedSession.duration} min</p>
                     <p className="font-semibold text-lg mt-4 text-gray-900">
-                      Total: ${selectedSession.price} USD
+                      Total: ${selectedSession.price} MXN
                     </p>
                   </div>
                   <button
@@ -274,4 +274,3 @@ export default function ReservarPage() {
     </div>
   )
 }
-

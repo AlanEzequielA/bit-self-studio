@@ -123,7 +123,7 @@ export default function ReservarPage() {
             <h1 className="text-4xl font-bold text-gray-900 mb-2">
               Estudio de Auto-Fotografía
             </h1>
-            <p className="text-xl text-gray-600">
+            <p className="text-xl text-gray-700">
               Agenda tu sesión de fotografía con nosotros.
             </p>
           </div>
@@ -140,7 +140,7 @@ export default function ReservarPage() {
                   >
                     ←
                   </button>
-                  <h3 className="text-lg font-semibold">
+                  <h3 className="text-lg font-semibold text-gray-900">
                     {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
                   </h3>
                   <button
@@ -153,7 +153,7 @@ export default function ReservarPage() {
                 
                 <div className="grid grid-cols-7 gap-2 mb-2">
                   {['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá', 'Do'].map(day => (
-                    <div key={day} className="text-center text-sm font-medium text-gray-600 py-2">
+                    <div key={day} className="text-center text-sm font-medium text-gray-700 py-2">
                       {day}
                     </div>
                   ))}
@@ -188,7 +188,7 @@ export default function ReservarPage() {
               {/* Time Slots */}
               {selectedDate && (
                 <div className="bg-white rounded-lg shadow-md p-6">
-                  <h3 className="text-lg font-semibold mb-4">Horarios Disponibles</h3>
+                  <h3 className="text-lg font-semibold mb-4 text-gray-900">Horarios Disponibles</h3>
                   <div className="space-y-2">
                     {availableSlots.map((slot, idx) => {
                       const isSelected = selectedTime === `${slot.start}-${slot.end}`
@@ -218,7 +218,7 @@ export default function ReservarPage() {
             <div className="space-y-6">
               {/* Session Selection */}
               <div className="bg-white rounded-lg shadow-md p-6">
-                <h3 className="text-lg font-semibold mb-4">Tipo de Sesión</h3>
+                <h3 className="text-lg font-semibold mb-4 text-gray-900">Tipo de Sesión</h3>
                 <div className="space-y-3">
                   {sessionTypes.map((session) => (
                     <button
@@ -230,8 +230,8 @@ export default function ReservarPage() {
                           : 'border-gray-200 hover:border-yellow-300'
                       }`}
                     >
-                      <div className="font-semibold">{session.name}</div>
-                      <div className="text-sm text-gray-600">
+                      <div className="font-semibold text-gray-900">{session.name}</div>
+                      <div className="text-sm text-gray-700">
                         {session.duration} min - ${session.price} USD
                       </div>
                     </button>
@@ -242,18 +242,18 @@ export default function ReservarPage() {
               {/* Appointment Summary */}
               {selectedDate && selectedTime && selectedSession && (
                 <div className="bg-white rounded-lg shadow-md p-6">
-                  <h3 className="text-lg font-semibold mb-4">Resumen de la Cita:</h3>
-                  <div className="space-y-2 text-sm mb-6">
-                    <p className="font-medium">{selectedSession.name}</p>
-                    <p>{selectedDate.toLocaleDateString('es-ES', { 
+                  <h3 className="text-lg font-semibold mb-4 text-gray-900">Resumen de la Cita:</h3>
+                  <div className="space-y-2 text-sm mb-6 text-gray-800">
+                    <p className="font-medium text-gray-900">{selectedSession.name}</p>
+                    <p className="text-gray-700">{selectedDate.toLocaleDateString('es-ES', { 
                       weekday: 'long', 
                       year: 'numeric', 
                       month: 'long', 
                       day: 'numeric' 
                     })}</p>
-                    <p>{selectedTime}</p>
-                    <p>Duración: {selectedSession.duration} min</p>
-                    <p className="font-semibold text-lg mt-4">
+                    <p className="text-gray-700">{selectedTime}</p>
+                    <p className="text-gray-700">Duración: {selectedSession.duration} min</p>
+                    <p className="font-semibold text-lg mt-4 text-gray-900">
                       Total: ${selectedSession.price} USD
                     </p>
                   </div>

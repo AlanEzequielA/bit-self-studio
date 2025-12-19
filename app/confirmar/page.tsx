@@ -119,19 +119,19 @@ export default function ConfirmarPage() {
               <h1 className="text-4xl font-bold text-gray-900 mb-4">
                 Confirmación de Sesión
               </h1>
-              <p className="text-gray-600 mb-8">
+              <p className="text-gray-700 mb-8">
                 Tu cita para una Sesión de Auto-Fotografía ha sido agendada correctamente.
               </p>
 
               {/* Session Details */}
               <div className="bg-gray-50 rounded-lg p-6 mb-6">
-                <h2 className="font-semibold mb-4">Detalles de tu Sesión</h2>
+                <h2 className="font-semibold mb-4 text-gray-900">Detalles de tu Sesión</h2>
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
                     <svg className="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
-                    <span>
+                    <span className="text-gray-900">
                       {appointmentDate.toLocaleDateString('es-ES', {
                         weekday: 'long',
                         year: 'numeric',
@@ -144,13 +144,13 @@ export default function ConfirmarPage() {
                     <svg className="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span>{details.time}</span>
+                    <span className="text-gray-900">{details.time}</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <svg className="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span>{details.sessionType.duration} minutos</span>
+                    <span className="text-gray-900">{details.sessionType.duration} minutos</span>
                   </div>
                 </div>
               </div>

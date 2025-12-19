@@ -34,7 +34,7 @@ export default function ServiciosPage() {
             <h1 className="text-5xl font-bold text-gray-900 mb-4">
               Reservar Sesión y Precios
             </h1>
-            <p className="text-xl text-gray-600">
+            <p className="text-xl text-gray-700">
               Tu estudio de auto-fotografía profesional. Tú tienes el control. Reserva tu tiempo.
             </p>
           </div>
@@ -56,7 +56,7 @@ export default function ServiciosPage() {
                   <h2 className="text-3xl font-bold text-gray-900 mb-3">
                     Estudio de Auto-Fotografía
                   </h2>
-                  <p className="text-gray-600 text-lg">
+                  <p className="text-gray-700 text-lg">
                     Controla tu propia sesión en nuestro estudio profesional. Incluye equipo de alta calidad y espacio privado. ¡Captura tus mejores momentos a tu ritmo!
                   </p>
                 </div>
@@ -69,7 +69,7 @@ export default function ServiciosPage() {
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">
                       {session.name}
                     </h3>
-                    <p className="text-gray-600 mb-4">
+                    <p className="text-gray-700 mb-4">
                       ({session.duration} min) | ${session.price} USD
                     </p>
                     <Link

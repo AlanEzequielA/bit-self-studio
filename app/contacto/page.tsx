@@ -35,7 +35,7 @@ export default function ContactoPage() {
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
               Contacto
             </h1>
-            <p className="text-xl text-gray-600">
+            <p className="text-xl text-gray-700">
               ¿Tienes alguna pregunta? Estamos aquí para ayudarte.
             </p>
           </div>
@@ -59,7 +59,7 @@ export default function ContactoPage() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-2">Horario</h3>
-                  <p className="text-gray-600">
+                  <p className="text-gray-700">
                     Lunes - Viernes: 9:00 AM - 6:00 PM<br />
                     Sábados: 10:00 AM - 4:00 PM<br />
                     Domingos: Cerrado

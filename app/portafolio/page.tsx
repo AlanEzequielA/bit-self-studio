@@ -13,7 +13,7 @@ export default function PortafolioPage() {
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
               Resultados de Auto-Fotografía
             </h1>
-            <p className="text-xl text-gray-600 mb-4">
+            <p className="text-xl text-gray-700 mb-4">
               Momentos reales capturados por ti mismo.
             </p>
             <Link href="/portafolio" className="text-yellow-500 font-medium hover:underline">

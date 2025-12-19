@@ -16,7 +16,7 @@ export default function ContactoPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setSubmitting(true)
-    
+
     // Aquí puedes agregar la lógica para enviar el formulario
     setTimeout(() => {
       alert('Mensaje enviado correctamente. Te contactaremos pronto.')
@@ -28,7 +28,7 @@ export default function ContactoPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header currentPage="contacto" />
-      
+
       <main className="flex-1 py-16 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
@@ -43,7 +43,7 @@ export default function ContactoPage() {
           <div className="grid md:grid-cols-2 gap-12">
             {/* Contact Information */}
             <div>
-              <h2 className="text-2xl font-semibold mb-6">Información de Contacto</h2>
+              <h2 className="text-2xl font-semibold mb-6 text-gray-900">Información de Contacto</h2>
               <div className="space-y-4">
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-2">Email</h3>
@@ -70,7 +70,7 @@ export default function ContactoPage() {
 
             {/* Contact Form */}
             <div>
-              <h2 className="text-2xl font-semibold mb-6">Envíanos un Mensaje</h2>
+              <h2 className="text-2xl font-semibold mb-6 text-gray-900">Envíanos un Mensaje</h2>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -85,7 +85,7 @@ export default function ContactoPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-800 mb-1">
                     Email
                   </label>
                   <input
@@ -108,7 +108,7 @@ export default function ContactoPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-800 mb-1">
                     Mensaje
                   </label>
                   <textarea
@@ -136,4 +136,3 @@ export default function ContactoPage() {
     </div>
   )
 }
-

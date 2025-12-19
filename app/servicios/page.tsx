@@ -52,7 +52,7 @@ export default async function ServiciosPage() {
               {/* Session Packages */}
               <div className="grid md:grid-cols-3 gap-6 mt-8">
                 {sessionTypes.length > 0 ? (
-                  sessionTypes.map((session) => (
+                  sessionTypes.map((session: { id: string; name: string; description: string | null; duration: number; price: number }) => (
                     <div key={session.id} className="text-center">
                       <h3 className="text-lg font-semibold text-gray-900 mb-2">
                         {session.name}

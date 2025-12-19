@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="280" viewBox="0 0 1200 280" role="img" aria-label="bit. Self Studio">
+  <!-- "bit" -->
+  <text x="70" y="185"
+        font-family="Inter, SF Pro Display, Helvetica, Arial, sans-serif"
+        font-size="170"
+        font-weight="800"
+        fill="#0B1220"
+        letter-spacing="-6">bit</text>
+
+  <!-- Yellow dot -->
+  <circle cx="330" cy="185" r="16" fill="#F5C400"/>
+
+  <!-- "Self Studio" even smaller -->
+  <text x="410" y="170"
+        font-family="Inter, SF Pro Display, Helvetica, Arial, sans-serif"
+        font-size="100"
+        font-weight="500"
+        fill="#6B7280"
+        letter-spacing="-1">Self Studio</text>
+</svg>
